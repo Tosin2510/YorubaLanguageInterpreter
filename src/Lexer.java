@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -25,7 +26,7 @@ public class Lexer {
         posMap.put("determiner", PartOfSpeech.DETERMINER);
 
         // 1. CHANGER: Tell the dictionary to map raw "character" rows to PRONOUN
-        posMap.put("character", PartOfSpeech.PRONOUN); 
+        posMap.put("character", PartOfSpeech.PRONOUN);
     }
 
     public void loadDataset(String filePath) throws IOException {
@@ -36,7 +37,7 @@ public class Lexer {
 
                 try {
                     JsonObject jsonObj = JsonParser.parseString(line.trim()).getAsJsonObject();
-                    
+
                     if (!jsonObj.has("word") || !jsonObj.has("pos")) continue;
 
                     String word = jsonObj.get("word").getAsString().trim();
@@ -66,9 +67,7 @@ public class Lexer {
                     if (element.isJsonObject()) {
                         JsonObject soundObj = element.getAsJsonObject();
                         if (soundObj.has("ipa")) {
-                            System.out.println("  -> Extracted IPA: " + soundObj.get("ipa"));
                             return soundObj.get("ipa").getAsString();
-                            // return soundObj.get("ipa").toString();
                         }
                     }
                 }
