@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,8 +25,6 @@ public class Lexer {
         posMap.put("adjective", PartOfSpeech.ADJECTIVE);
         posMap.put("det", PartOfSpeech.DETERMINER);
         posMap.put("determiner", PartOfSpeech.DETERMINER);
-
-        // 1. CHANGER: Tell the dictionary to map raw "character" rows to PRONOUN
         posMap.put("character", PartOfSpeech.PRONOUN);
     }
 
@@ -42,17 +41,18 @@ public class Lexer {
 
                     String word = jsonObj.get("word").getAsString().trim();
                     String rawPos = jsonObj.get("pos").getAsString().trim().toLowerCase();
-
-                    // 2. CHANGER: Removed "rawPos.equals("character")" so "O" doesn't get skipped!
                     if (word.isEmpty()) continue;
 
                     if (posMap.containsKey(rawPos)) {
                         PartOfSpeech assignedPos = posMap.get(rawPos);
                         String phonetic = extractIPA(jsonObj);
-                        dictionary.put(word.toLowerCase(), new Token(word, assignedPos, phonetic));
+                        // Normalize word: strip off diacritics
+                        word = Normalizer.normalize(word.toLowerCase(), Normalizer.Form.NFD)
+                                .replaceAll("\\p{M}", "");
+                        dictionary.put(word, new Token(word, assignedPos, phonetic));
                     }
                 } catch (Exception e) {
-                    continue; // Skip any broken rows safely
+                    continue;
                 }
             }
         }

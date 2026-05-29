@@ -6,13 +6,13 @@ public class Parser {
     private final List<List<PartOfSpeech>> allowedRules = new ArrayList<>();
 
     public Parser() {
-        // --- Subject-Verb-Object (SVO) Variations ---
+        // Subject-Verb-Object (SVO) Variations
         allowedRules.add(Arrays.asList(PartOfSpeech.PRONOUN, PartOfSpeech.VERB, PartOfSpeech.NOUN));
         allowedRules.add(Arrays.asList(PartOfSpeech.PRONOUN, PartOfSpeech.VERB, PartOfSpeech.NOUN, PartOfSpeech.ADJECTIVE));
         allowedRules.add(Arrays.asList(PartOfSpeech.PRONOUN, PartOfSpeech.VERB, PartOfSpeech.NOUN, PartOfSpeech.DETERMINER));
         allowedRules.add(Arrays.asList(PartOfSpeech.NOUN, PartOfSpeech.VERB, PartOfSpeech.NOUN));
 
-        // --- Determiner & Noun Sequences ---
+        // Determiner & Noun Sequences
         allowedRules.add(Arrays.asList(PartOfSpeech.DETERMINER, PartOfSpeech.NOUN, PartOfSpeech.VERB, PartOfSpeech.NOUN));
         allowedRules.add(Arrays.asList(PartOfSpeech.PRONOUN, PartOfSpeech.VERB, PartOfSpeech.DETERMINER, PartOfSpeech.NOUN));
     }
@@ -24,7 +24,7 @@ public class Parser {
         }
 
         if (allowedRules.contains(inputSequence)) {
-            return; 
+            return;
         }
 
         System.out.println("\n[SYNTAX ERROR]: Invalid sentence structure.");
